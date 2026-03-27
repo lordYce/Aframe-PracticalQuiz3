@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Solar System - A-Frame</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="script/solar-system.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background: #000;
+        }
+        /* Info panel removed for clean view */
+    </style>
+</head>
+<body>
+
+    <a-scene background="color: #000008" fog="type: exponential; color: #000008; density: 0.0008">
+        <a-assets>
+            <a-mixin id="star-point" geometry="primitive: sphere; radius: 0.25" material="color: #fff; emissive: #ffffff; emissiveIntensity: 1; opacity: 0.9" animation="property: scale; dir: alternate; dur: 3000; easing: easeInOutSine; loop: true; to: 0.35 0.35 0.35"></a-mixin>
+        </a-assets>
+        <!-- Camera positioned for immersive view -->
+        <a-camera position="0 50 220" rotation="-10 0 0" fov="70" look-controls wasd-controls="acceleration: 50"></a-camera>
+
+        <!-- Realistic space lighting with enhanced color temperature -->
+        <a-light type="ambient" color="rgb(90,95,120)" intensity="0.45"></a-light>
+        <!-- Distant blue nebula light for atmosphere -->
+        <a-light type="point" color="#6699ff" position="-2000 500 500" intensity="0.3" distance="3000" decay="1.5"></a-light>
+
+        <!-- Starfield background: Milky way + deep stars overlay -->
+        <a-entity id="starfield-milky" geometry="primitive: sphere; radius: 2800" 
+                  material="src: url(solar-system/texture/2k_stars_milky_way.jpg); side: back; opacity: 1"></a-entity>
+        <a-entity id="starfield-deep" geometry="primitive: sphere; radius: 2700" 
+                  material="src: url(solar-system/texture/2k_stars.jpg); side: back; opacity: 0.7; transparent: true"></a-entity>
+
+        <!-- Distant galaxy decoration rings (subtle 2D planes) -->
+        <a-entity id="galaxy1" position="-2300 100 2100" rotation="0 30 0" scale="15 15 15" material="src: url(solar-system/texture/2k_stars.jpg); opacity: 0.22; transparent: true" geometry="primitive: ring; radiusInner: 3; radiusOuter: 6;"></a-entity>
+        <a-entity id="galaxy2" position="2500 -40 -2000" rotation="0 -20 0" scale="13 13 13" material="src: url(solar-system/texture/2k_stars_milky_way.jpg); opacity: 0.18; transparent: true" geometry="primitive: ring; radiusInner: 4; radiusOuter: 8;"></a-entity>
+
+        <!-- Star clusters to create depth and dense core -->
+        <a-entity id="cluster1" position="-1000 400 1500">
+            <a-entity mixin="star-point" position="0 0 0"></a-entity>
+            <a-entity mixin="star-point" position="40 10 10"></a-entity>
+            <a-entity mixin="star-point" position="-30 -20 20"></a-entity>
+            <a-entity mixin="star-point" position="60 -25 -10"></a-entity>
+            <a-entity mixin="star-point" position="-50 30 -25"></a-entity>
+        </a-entity>
+
+        <a-entity id="cluster2" position="1200 -250 1300">
+            <a-entity mixin="star-point" position="0 0 0"></a-entity>
+            <a-entity mixin="star-point" position="-20 40 -15"></a-entity>
+            <a-entity mixin="star-point" position="15 -45 30"></a-entity>
+            <a-entity mixin="star-point" position="-35 30 40"></a-entity>
+            <a-entity mixin="star-point" position="50 -10 -40"></a-entity>
+        </a-entity>
+
+        <!-- Deep galaxy swirls as glowing clouds -->
+        <a-entity position="-1400 220 -1800" scale="14 14 14" rotation="0 50 0">
+            <a-torus radius="7" tube-radius="0.6" material="color: #aa88ff; opacity:0.22; transparent:true" side="double"></a-torus>
+            <a-torus radius="8.5" tube-radius="0.4" material="color: #88ccff; opacity:0.14; transparent:true" side="double"></a-torus>
+        </a-entity>
+
+        <a-entity position="1500 -80 1900" scale="10 10 10" rotation="0 20 0">
+            <a-torus radius="6.5" tube-radius="0.5" material="color: #ff88cc; opacity:0.20; transparent:true" side="double"></a-torus>
+            <a-torus radius="8.0" tube-radius="0.35" material="color: #cc88ff; opacity:0.15; transparent:true" side="double"></a-torus>
+        </a-entity>
+
+        <!-- Space Phenomena: Nebula Clouds -->
+        <!-- Purple/Blue Nebula in upper left -->
+        <a-entity position="-600 400 -800" scale="25 25 25" rotation="45 30 20">
+            <a-torus radius="4" tube-radius="0.8" material="color: #9966ff; opacity: 0.22; transparent: true; side: double"></a-torus>
+            <a-torus radius="5.2" tube-radius="0.5" material="color: #6699ff; opacity: 0.16; transparent: true; side: double"></a-torus>
+            <a-torus radius="6" tube-radius="0.3" material="color: #6666ff; opacity: 0.1; transparent: true; side: double"></a-torus>
+        </a-entity>
+
+        <!-- Red Nebula (lower right) -->
+        <a-entity position="750 -200 600" scale="20 20 20" rotation="-30 45 10">
+            <a-torus radius="3.5" tube-radius="0.7" material="color: #ff6666; opacity: 0.19; transparent: true; side: double"></a-torus>
+            <a-torus radius="4.8" tube-radius="0.4" material="color: #ff4444; opacity: 0.13; transparent: true; side: double"></a-torus>
+        </a-entity>
+
+        <!-- Cyan Nebula (far left) -->
+        <a-entity position="-1200 100 500" scale="18 18 18" rotation="20 -20 40">
+            <a-torus radius="3.8" tube-radius="0.6" material="color: #44ddff; opacity: 0.18; transparent: true; side: double"></a-torus>
+            <a-torus radius="5" tube-radius="0.35" material="color: #44aaff; opacity: 0.12; transparent: true; side: double"></a-torus>
+        </a-entity>
+
+        <!-- Subtle luminous glow layers for night sky texture effect -->
+        <!-- Upper left luminous glow -->
+        <a-entity position="-1500 800 -1000" scale="40 40 40">
+            <a-torus radius="2" tube-radius="0.9" material="color: #ddddff; opacity: 0.08; transparent: true; side: double"></a-torus>
+            <a-torus radius="3" tube-radius="0.6" material="color: #aaccff; opacity: 0.05; transparent: true; side: double"></a-torus>
+        </a-entity>
+
+        <!-- Right side luminous glow -->
+        <a-entity position="2000 600 800" scale="35 35 35">
+            <a-torus radius="2.2" tube-radius="1" material="color: #ffdddd; opacity: 0.07; transparent: true; side: double"></a-torus>
+            <a-torus radius="3.2" tube-radius="0.7" material="color: #ffccaa; opacity: 0.04; transparent: true; side: double"></a-torus>
+        </a-entity>
+
+        <!-- Far upper glow for luminous texture -->
+        <a-entity position="0 1200 -2000" scale="50 50 50">
+            <a-torus radius="1.8" tube-radius="0.8" material="color: #ccddff; opacity: 0.06; transparent: true; side: double"></a-torus>
+            <a-torus radius="2.8" tube-radius="0.5" material="color: #aabbff; opacity: 0.03; transparent: true; side: double"></a-torus>
+        </a-entity>
+
+        <!-- Cosmic Dust Clouds & Asteroids -->
+        <!-- Asteroid field 1 -->
+        <a-entity id="asteroid-field-1" position="300 200 400"></a-entity>
+
+        <!-- Asteroid field 2 -->
+        <a-entity id="asteroid-field-2" position="-500 -150 300"></a-entity>
+
+        <!-- ORION NEBULA - Famous nebula replica -->
+        <a-entity position="1800 -600 -2200" scale="30 30 30" rotation="30 -45 20">
+            <a-torus radius="5" tube-radius="1" material="color: #33ff88; opacity: 0.2; transparent: true; side: double"></a-torus>
+            <a-torus radius="6.5" tube-radius="0.7" material="color: #22ff99; opacity: 0.14; transparent: true; side: double"></a-torus>
+            <a-torus radius="8" tube-radius="0.5" material="color: #11ffaa; opacity: 0.08; transparent: true; side: double"></a-torus>
+            <!-- Orion Nebula center star cluster -->
+            <a-sphere radius="2" position="0 0 0" material="color: #ffff88; opacity: 0.3; transparent: true"></a-sphere>
+        </a-entity>
+
+        <!-- SUPERNOVA - Distant bright explosion -->
+        <a-entity position="-2000 800 -1500" scale="1 1 1">
+            <!-- Supernova core -->
+            <a-sphere radius="15" position="0 0 0" material="color: #ffff00; opacity: 0.4; transparent: true; emissive: #ffff00; emissiveIntensity: 0.8"></a-sphere>
+            <!-- Supernova outer ring -->
+            <a-sphere radius="25" position="0 0 0" material="color: #ff8800; opacity: 0.25; transparent: true"></a-sphere>
+            <!-- Supernova expansion waves -->
+            <a-sphere radius="35" position="0 0 0" material="color: #ff4400; opacity: 0.15; transparent: true" animation="property: scale; to: 1.3 1.3 1.3; dur: 3000; easing: easeInOutQuad; loop: true; dir: alternate"></a-sphere>
+        </a-entity>
+
+        <!-- CONSTELLATION - Orion Belt Star Pattern -->
+        <a-entity position="-1500 300 1200" scale="1 1 1">
+            <!-- Orion's Belt - three stars in a line -->
+            <a-sphere radius="0.6" position="0 0 0" material="color: #ffffff; emissive: #ffffff; emissiveIntensity: 1"></a-sphere>
+            <a-sphere radius="0.6" position="80 0 0" material="color: #ffffdd; emissive: #ffffdd; emissiveIntensity: 0.9"></a-sphere>
+            <a-sphere radius="0.6" position="160 0 0" material="color: #ffddaa; emissive: #ffddaa; emissiveIntensity: 0.8"></a-sphere>
+            <!-- Additional Orion stars for constellation pattern -->
+            <a-sphere radius="0.5" position="40 100 20" material="color: #a4ddff; emissive: #a4ddff; emissiveIntensity: 0.8"></a-sphere>
+            <a-sphere radius="0.5" position="120 80 -30" material="color: #a4ddff; emissive: #a4ddff; emissiveIntensity: 0.8"></a-sphere>
+            <a-sphere radius="0.4" position="80 -100 40" material="color: #ff99dd; emissive: #ff99dd; emissiveIntensity: 0.7"></a-sphere>
+        </a-entity>
+
+        <!-- METEOR SHOWER - Animated meteors streaking through space -->
+        <a-entity id="meteor-shower" position="800 400 -1000">
+            <a-entity geometry="primitive: sphere; radius: 1.5" material="color: #ffff88; emissive: #ffff00; emissiveIntensity: 0.9" position="0 0 0" animation="property: position; easing: linear; dur: 4000; loop: true; to: -300 -500 300"></a-entity>
+            <a-entity geometry="primitive: sphere; radius: 1.4" material="color: #ffdd66; emissive: #ffdd00; emissiveIntensity: 0.8" position="50 0 0" animation="property: position; easing: linear; dur: 4000; loop: true; to: -250 -500 350; delay: 200"></a-entity>
+            <a-entity geometry="primitive: sphere; radius: 1.3" material="color: #ffcc44; emissive: #ffdd00; emissiveIntensity: 0.8" position="100 0 0" animation="property: position; easing: linear; dur: 4000; loop: true; to: -200 -500 280; delay: 400"></a-entity>
+            <a-entity geometry="primitive: sphere; radius: 1.5" material="color: #ffff88; emissive: #ffff00; emissiveIntensity: 0.9" position="-50 0 0" animation="property: position; easing: linear; dur: 4000; loop: true; to: -350 -500 320; delay: 100"></a-entity>
+            <a-entity geometry="primitive: sphere; radius: 1.4" material="color: #ffdd66; emissive: #ffdd00; emissiveIntensity: 0.8" position="-100 0 0" animation="property: position; easing: linear; dur: 4000; loop: true; to: -400 -500 340; delay: 300"></a-entity>
+        </a-entity>
+
+        <!-- Enhanced Aurora - Multi-layer auroras for stronger effect -->
+        <a-plane width="500" height="400" position="100 350 -900" rotation="-20 0 0" material="color: #88ddff; opacity: 0.15; transparent: true; emissive: #44aaff; emissiveIntensity: 0.6" animation="property: opacity; to: 0.25; dur: 3000; dir: alternate; easing: easeInOutSine; loop: true"></a-plane>
+        <a-plane width="480" height="380" position="110 360 -880" rotation="-20 0 0" material="color: #99eeff; opacity: 0.1; transparent: true; emissive: #55bbff; emissiveIntensity: 0.4" animation="property: opacity; to: 0.18; dur: 3500; dir: alternate; easing: easeInOutSine; loop: true; delay: 500"></a-plane>
+
+        <!-- ADDITIONAL DISTANT GALAXIES - Spiral and elliptical forms -->
+        <a-entity position="-2600 1200 1800" scale="20 20 20" rotation="30 60 10">
+            <a-torus radius="4" tube-radius="0.7" material="color: #ff99ff; opacity: 0.16; transparent: true; side: double"></a-torus>
+            <a-torus radius="5.5" tube-radius="0.45" material="color: #dd66ff; opacity: 0.11; transparent: true; side: double"></a-torus>
+        </a-entity>
+
+        <!-- SUN with texture and enhanced corona -->
+        <a-entity id="sun" position="0 0 0">
+            <a-sphere radius="12" position="0 0 0" 
+                      material="src: url(solar-system/texture/2k_sun.jpg); emissive: #FDB813; emissiveIntensity: 1.0; emissiveMap: url(solar-system/texture/2k_sun.jpg); side: front">
+            </a-sphere>
+            <!-- Inner glow layer -->
+            <a-sphere radius="12.5" position="0 0 0" 
+                      material="color: #FDB813; opacity: 0.2; transparent: true">
+            </a-sphere>
+            <!-- Outer corona layer -->
+            <a-sphere radius="13.5" position="0 0 0" 
+                      material="color: #FFE000; opacity: 0.12; transparent: true" animation="property: scale; to: 1.05 1.05 1.05; dur: 4000; dir: alternate; easing: easeInOutSine; loop: true">
+            </a-sphere>
+            <!-- Sun light source with improved quality -->
+            <a-light type="point" color="#FFD68A" intensity="3" distance="2500" decay="2"></a-light>
+        </a-entity>
+
+        <!-- MERCURY -->
+        <a-entity id="mercury-orbit" position="0 0 0" animation="property: rotation; to: 0 360 0; dur: 12000; loop: true; easing: linear">
+            <a-entity position="55 0 0">
+                <a-sphere radius="2.6" position="0 0 0" 
+                          material="src: url(solar-system/texture/2k_mercury.jpg); metalness: 0.6; roughness: 0.4">
+                    <a-animation attribute="rotation" to="360 0 0" dur="4000" repeat="indefinite"></a-animation>
+                </a-sphere>
+                <!-- Mercury sunlit atmosphere -->
+                <a-sphere radius="2.75" position="0 0 0" 
+                          material="color: #cccccc; opacity: 0.15; transparent: true"></a-sphere>
+            </a-entity>
+        </a-entity>
+
+        <!-- VENUS -->
+        <a-entity id="venus-orbit" position="0 0 0" animation="property: rotation; to: 0 360 0; dur: 18400; loop: true; easing: linear">
+            <a-entity position="90 0 0">
+                <a-sphere radius="5.5" position="0 0 0" 
+                          material="src: url(solar-system/texture/2k_venus_surface.jpg); roughness: 0.8">
+                    <a-animation attribute="rotation" to="360 0 0" dur="6000" repeat="indefinite"></a-animation>
+                </a-sphere>
+                <!-- Venus thick atmosphere layer 1 -->
+                <a-sphere radius="5.7" position="0 0 0" 
+                          material="src: url(solar-system/texture/2k_venus_atmosphere.jpg); transparent: true; opacity: 0.7"></a-sphere>
+                <!-- Venus thick atmosphere layer 2 -->
+                <a-sphere radius="5.95" position="0 0 0" 
+                          material="color: #ffcc99; opacity: 0.2; transparent: true" animation="property: rotation; dir: alternate; to: 0 360 0; dur: 8000; loop: true; easing: linear"></a-sphere>
+                </a-sphere>
+            </a-entity>
+        </a-entity>
+
+        <!-- EARTH + MOON -->
+        <a-entity id="earth-orbit" position="0 0 0" animation="property: rotation; to: 0 360 0; dur: 31536; loop: true; easing: linear">
+            <a-entity position="125 0 0">
+                <!-- EARTH -->
+                <a-sphere radius="5.4" position="0 0 0" 
+                          material="src: url(solar-system/texture/2k_earth_daymap.jpg); roughness: 0.5; metalness: 0.1">
+                    <a-animation attribute="rotation" to="0 360 0" dur="10000" repeat="indefinite"></a-animation>
+                </a-sphere>
+                <!-- EARTH ATMOSPHERE with clouds -->
+                <a-sphere radius="5.65" position="0 0 0" 
+                          material="src: url(solar-system/texture/2k_earth_clouds.jpg); transparent: true; opacity: 0.65">
+                    <a-animation attribute="rotation" to="360 0 0" dur="15000" repeat="indefinite"></a-animation>
+                </a-sphere>
+                <!-- EARTH atmospheric glow -->
+                <a-sphere radius="5.8" position="0 0 0" 
+                          material="color: #4488ff; opacity: 0.1; transparent: true"></a-sphere>
+                <!-- MOON orbiting EARTH -->
+                <a-entity id="moon-orbit" animation="property: rotation; to: 0 360 0; dur: 3500; loop: true; easing: linear">
+                    <a-sphere radius="1.5" position="13 0 0" 
+                              material="src: url(solar-system/texture/2k_moon.jpg); roughness: 0.9; metalness: 0.05">
+                        <a-animation attribute="rotation" to="0 360 0" dur="8000" repeat="indefinite"></a-animation>
+                    </a-sphere>
+                </a-entity>
+            </a-entity>
+        </a-entity>
+
+        <!-- MARS -->
+        <a-entity id="mars-orbit" position="0 0 0" animation="property: rotation; to: 0 360 0; dur: 59400; loop: true; easing: linear">
+            <a-entity position="175 0 0">
+                <a-sphere radius="4.2" position="0 0 0" 
+                          material="src: url(solar-system/texture/2k_mars.jpg); roughness: 0.7; metalness: 0.05">
+                    <a-animation attribute="rotation" to="0 360 0" dur="10000" repeat="indefinite"></a-animation>
+                </a-sphere>
+                <!-- Mars thin atmosphere -->
+                <a-sphere radius="4.35" position="0 0 0" 
+                          material="color: #ff9955; opacity: 0.12; transparent: true"></a-sphere>
+            </a-entity>
+        </a-entity>
+
+        <!-- JUPITER -->
+        <a-entity id="jupiter-orbit" position="0 0 0" animation="property: rotation; to: 0 360 0; dur: 120000; loop: true; easing: linear">
+            <a-entity position="265 0 0">
+                <a-sphere radius="11" position="0 0 0" 
+                          material="src: url(solar-system/texture/2k_jupiter.jpg); roughness: 0.6; metalness: 0.1">
+                    <a-animation attribute="rotation" to="0 360 0" dur="4000" repeat="indefinite"></a-animation>
+                </a-sphere>
+                <!-- Jupiter atmospheric layer -->
+                <a-sphere radius="11.5" position="0 0 0" 
+                          material="color: #ffcc99; opacity: 0.15; transparent: true" animation="property: rotation; dir: alternate; to: 0 360 0; dur: 6000; loop: true; easing: linear"></a-sphere>
+            </a-entity>
+        </a-entity>
+
+        <!-- SATURN -->
+        <a-entity id="saturn-orbit" position="0 0 0" animation="property: rotation; to: 0 360 0; dur: 180000; loop: true; easing: linear">
+            <a-entity position="365 0 0">
+                <!-- Saturn body -->
+                <a-sphere radius="9.2" position="0 0 0" 
+                          material="src: url(solar-system/texture/2k_saturn.jpg); roughness: 0.5; metalness: 0.15">
+                    <a-animation attribute="rotation" to="0 360 0" dur="5000" repeat="indefinite"></a-animation>
+                </a-sphere>
+                <!-- Saturn atmospheric layer -->
+                <a-sphere radius="9.6" position="0 0 0" 
+                          material="color: #ffddaa; opacity: 0.12; transparent: true" animation="property: rotation; dir: alternate; to: 0 360 0; dur: 7000; loop: true; easing: linear"></a-sphere>
+                <!-- Saturn rings primary -->
+                <a-torus radius="11.5" tube-radius="0.4" position="0 0 0" 
+                         rotation="25 0 0"
+                         material="src: url(solar-system/texture/2k_saturn_ring_alpha.png); transparent: true; opacity: 0.9; side: double">
+                </a-torus>
+                <!-- Saturn rings secondary glow -->
+                <a-torus radius="11.2" tube-radius="0.3" position="0 0 0" 
+                         rotation="25 0 0"
+                         material="color: #ffffee; opacity: 0.15; transparent: true; side: double"></a-torus>
+            </a-entity>
+        </a-entity>
+
+        <!-- URANUS -->
+        <a-entity id="uranus-orbit" position="0 0 0" animation="property: rotation; to: 0 360 0; dur: 264000; loop: true; easing: linear">
+            <a-entity position="470 0 0">
+                <a-sphere radius="7.0" position="0 0 0" 
+                          material="src: url(solar-system/texture/2k_uranus.jpg); roughness: 0.4; metalness: 0.2">
+                    <a-animation attribute="rotation" to="0 360 0" dur="8000" repeat="indefinite"></a-animation>
+                </a-sphere>
+                <!-- Uranus atmospheric glow -->
+                <a-sphere radius="7.4" position="0 0 0" 
+                          material="color: #44ddff; opacity: 0.18; transparent: true" animation="property: rotation; dir: alternate; to: 0 360 0; dur: 9000; loop: true; easing: linear"></a-sphere>
+            </a-entity>
+        </a-entity>
+
+        <!-- NEPTUNE -->
+        <a-entity id="neptune-orbit" position="0 0 0" animation="property: rotation; to: 0 360 0; dur: 360000; loop: true; easing: linear">
+            <a-entity position="570 0 0">
+                <a-sphere radius="6.0" position="0 0 0" 
+                          material="src: url(solar-system/texture/2k_neptune.jpg); roughness: 0.45; metalness: 0.18">
+                    <a-animation attribute="rotation" to="0 360 0" dur="6000" repeat="indefinite"></a-animation>
+                </a-sphere>
+                <!-- Neptune atmospheric glow with storms -->
+                <a-sphere radius="6.4" position="0 0 0" 
+                          material="color: #4488ff; opacity: 0.2; transparent: true" animation="property: rotation; dir: alternate; to: 0 360 0; dur: 8000; loop: true; easing: linear"></a-sphere>
+            </a-entity>
+        </a-entity>
+
+        <!-- Orbital paths removed for clean view; planets are on their precise orbit distances -->
+
+    </a-scene>
+
+    <script>
+        // Optional: Add mouse controls and zoom functionality
+        document.querySelector('a-scene').addEventListener('loaded', function() {
+            const scene = this;
+            console.log('Solar System loaded with real textures!');
+            
+            // Prevent right-click context menu
+            document.addEventListener('contextmenu', event => event.preventDefault());
+        });
+    </script>
+</body>
+</html>
